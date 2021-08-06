@@ -49,3 +49,11 @@
 	text-decoration-line:underline;
 }
 
+
+
+/*link property*/
+.footer a:link, .footer a:active, .footer a:hover, .footer a:visited{
+	color: #FFFFFF !important;
+	text-decoration-line:underline !important;
+	font-weight: 400 !important;
+}

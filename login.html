@@ -2,11 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Contact | Life - Living It Fully Everyday</title>
+<title>Member Login | Life - Living It Fully Everyday</title>
 <link rel="stylesheet" href="assets/layout.css">
 <link rel="stylesheet" href="assets/navbar.css">
 <link rel="stylesheet" href="assets/footer.css">
+<link rel="stylesheet" href="assets/content.css">
 <link href="https://fonts.googleapis.com/css?family=Noto Sans" rel="stylesheet" type="text/css">
+<script src="assets/accounts.js"></script>
 
 </head>
 
@@ -34,10 +36,10 @@
 				</div>
 				
 				<div class="menu item btn login">
-					<a href="accounts.html">Login</a>
+					<a href="login.html">Login</a>
 				</div>
 				<div class="menu item btn register">
-					<a href="accounts.html">Register</a>
+					<a href="register.html">Register</a>
 				</div>
 			</div>
 		</div>
@@ -56,7 +58,35 @@
 	
 	<!--Main Content Area-->
 	<div class="content">
-		test
+	  <div class="content-container">
+		  <div id="members-form-decoration">
+			  <img src="assets/images/account.svg" alt="LIFE" style="padding-top: 10px;">  
+		  </div>
+		  
+		  <div id="members-form" style="width:40%; padding-left: 100px">
+				<h1>Log in to LIFE</h1>
+				<br>
+			 	<form action="" method="post">
+				  <label class="contact-label" for="usrname">Username</label><br>
+    				<input type="text"  id="usrname" name="usrname" required><br>
+					<br>
+					
+    				<label class="contact-label" for="pswd">Password</label><br>
+				  	<input type="password" id="pswd" name="pswd" required><br>
+					<br><br>
+					
+				 
+				   <input class="contact-submit" type="submit" value="Login"  onclick="alertLoginBtnOnClick()"><br><br>
+				   <span id="">Not have an account?&nbsp;&nbsp;<a href="register.html">Register</a></span>
+
+			  </form>
+		    <br>
+			  
+
+	    </div>
+			
+			
+	  </div>
 	</div>
 	
 	
@@ -68,26 +98,24 @@
 				<a style="padding-top: 10px;">By using this site, you agree to our Cookie Policy and Privacy Policy.<br>Copyright 2021 by Peter Liu. All Rights Reserved.</a>
 				<h1 style="font-weight: 700;">Sitemap</h1>
 				<div class="link">
-					<a>Home</a>
-					<a>Service</a>
-					<a>Contact</a>
-					<a>Account</a>
+					<a href="index.html">Home</a>
+					<a href="service.html">Service</a>
+					<a href="contact.html">Contact</a>
+					<a href="register.html">Register</a>
+					<a href="login.html">Login</a>
 				</div>
 			</div>
 	
 				
 			<div id="right">
 				<h1 style="font-weight: 700;">COVID-19 resources</h1>
-				<a herf="https://www.dhhs.vic.gov.au/" target="_blank">Department of Health and Human Services Victoria</a>
-				<a herf="https://www.health.gov.au/" target="_blank">Australian Government Department of Health</a>
-				<a herf="https://business.vic.gov.au/" target="_blank">Buiness Victoria - Support for Victorian businesses</a>
-				<a herf="https://www.australia.gov.au/" target="_blank">Australian Government</a>
-
-		
+				<a href="https://www.dhhs.vic.gov.au/" target="_blank">Department of Health and Human Services Victoria</a>
+				<a href="https://www.health.gov.au/" target="_blank">Australian Government Department of Health</a>
+				<a href="https://business.vic.gov.au/" target="_blank">Buiness Victoria - Support for Victorian businesses</a>
+				<a href="https://www.australia.gov.au/" target="_blank">Australian Government</a>
 			</div>
 		</div>
 	</div>
-	
 </div>	
 </body>
 </html>

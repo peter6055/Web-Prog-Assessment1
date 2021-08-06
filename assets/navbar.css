@@ -65,3 +65,12 @@
 	color: white;
 	padding-top: 10px;
 }
+
+
+
+/*link property*/
+a:link, .menu a:active, .menu a:hover, .menu a:visited{
+	color: #000000;
+	text-decoration-line: none;
+	font-weight: 400;
+}
