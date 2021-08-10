@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css?family=Noto Sans" rel="stylesheet" type="text/css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="http://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="assets/meal-plan.js"></script>
 </head>
 
@@ -46,10 +46,10 @@
           <h1>I want to eat
             <input type="number" id="cal" name="cal" min="1200" max="2700">
             <br>
-            calories a day!</h1><br>
+            calories a day!</h1><br><br>
 		   
 		   <a>Please Select Your Preference:</a><br><br>
-		   <input type="radio" id="anything" name="category" value="category">
+		   <input type="radio" id="anything" name="category" value="category" checked>
            <label for="anything" id="any">Anything</label>
 			
 		   <input type="radio" id="paleo" name="category">
@@ -62,17 +62,19 @@
             
            <input type="radio" id="vegan" name="category"> 
            <label for="vegan"  style="background-image: url(assets/images/vegan.svg); background-repeat: no-repeat;
-		   background-position: 18px 6.5px; background-size: 21px;" >&nbsp; &nbsp; &nbsp; Vegan</label>
+		   background-position: 18px 6.5px; background-size: 21px;">&nbsp; &nbsp; &nbsp; Vegan</label>
            <br><br><br>
             
            <input  type="radio" id="keto" name="category">
-           <label for="keto"  style="background-image: url(assets/images/cookie.svg);">Ketogenic</label>
+           <label for="keto"  style="background-image: url(assets/images/cookie.svg); background-repeat: no-repeat;
+		   background-position: 18px 6.5px; background-size: 21px">&nbsp; &nbsp; &nbsp; Ketogenic</label>
             
            <input type="radio" id="medi" name="category">
-           <label for="medi" style="background-image: url(assets/images/chocolate.svg);">Mediterranean</label>
+           <label for="medi" style="background-image: url(assets/images/chocolate.svg); background-repeat: no-repeat;
+		   background-position: 18px 4px; background-size: 19px">&nbsp; &nbsp; &nbsp; Mediterranean</label>
             
-           <br><br><br>
-		   <input type="submit" value="Start Calculation">
+           <br><br><br><br><br>
+		   <input type="submit" value="Start Calculation"><br><br>
 
         </form>
       </div>

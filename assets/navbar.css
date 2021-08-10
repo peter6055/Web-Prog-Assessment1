@@ -51,8 +51,8 @@
 .menu .meal-planner {
 	padding-top:8px;
 	box-shadow: 1px 0px 13px 1px #D5D7DC;
-	border-radius: 40px;
 	border: 1px #ABABAB solid;
+	border-radius: 40px;
 	background: url("images/french-fries.svg");
 	background-repeat: no-repeat;
 	background-size: 20px;
