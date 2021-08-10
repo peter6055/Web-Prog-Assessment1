@@ -47,7 +47,17 @@
 	background-color: #5A49E3;
 }
 
-
+/*Nav bar menu login btn style*/
+.menu .meal-planner {
+	padding-top:8px;
+	box-shadow: 1px 0px 13px 1px #D5D7DC;
+	border-radius: 40px;
+	border: 1px #ABABAB solid;
+	background: url("images/french-fries.svg");
+	background-repeat: no-repeat;
+	background-size: 20px;
+	background-position: 15px 7px;
+}
 
 /*Nav bar menu login btn font style*/
 .menu .login a:link, .menu .login a:active, .menu .login a:hover, .menu .login a:visited{
@@ -58,6 +68,14 @@
 .menu .register a:link, .menu .register a:active, .menu .register a:hover, .menu .register a:visited{
 	color:#FFFFFF;
 }
+
+/*Nav bar menu login btn font style*/
+.menu .meal-planner a:link, .menu .meal-planner a:active, .menu .meal-planner a:hover, .menu .meal-planner a:visited{
+	color: #0D0D0D;
+	font-weight: 300;
+	
+}
+
 
 
 .accouncements {

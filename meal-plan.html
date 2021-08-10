@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Untitled Document</title>
+<script type="text/javascript" src="assets/meal-plan.js"></script>
+</head>
+
+<body>
+<form name="meal-form" action="javascript:void(0);" onsubmit="return doCalculation()">
+  <label for="cal">Cal:</label>
+  <input type="text" id="cal" name="cal">
+
+	<div class="category">
+	  <input type="radio" id="anything" name="category">anything
+    </div>
+	
+	<div class="categories">
+	  <input type="radio" id="paleo" name="category">paleo
+    </div>
+	
+	<div class="categories">
+	  <input type="radio" id="vegetarian" name="category">vegetarian
+    </div>
+	
+	<div class="categories">
+	  <input type="radio" id="vegan" name="category">vegan
+    </div>
+	
+	<div class="categories">
+	  <input type="radio" id="keto" name="category">keto
+    </div>
+	
+	<div class="categories">
+	  <input type="radio" id="medi" name="category">medi
+    </div>
+<br>
+  <input type="submit" value="Start Calculation">
+</form>
+	
+	
+</body>
+</html>

@@ -11,7 +11,7 @@
 
 
 /*left and right inner container*/
-.content #contact-form, .content #members-form{
+.content #contact-form, .content #members-form {
 	width: 50%;
 	display: flex;
 	flex-direction: column;
@@ -27,6 +27,7 @@
 	color: #061b36;
 	text-align:center; 
 	width: 90%;
+	
 }
 
 
@@ -99,6 +100,107 @@
 	flex-direction: column;
 	padding-left: 30px;
 }
+
+
+
+
+/*----- meal planner page -----*/
+
+#meal-left-col {
+	background: url("images/meal-bg1.svg");
+	background-repeat: no-repeat;
+	width: 60%;
+	display: flex;
+	flex-direction: column;
+}
+
+
+#meal-right-col{
+	margin-left:auto;
+}
+
+#meal-left-col input[type="number"] {	
+	border-top: 0px !important;
+	border-buttom: 10px !important;
+
+	border-left: 0px !important;
+	border-right: 0px !important;
+	
+	border-bottom-color: #000000;
+	border-bottom-style: solid;
+	width: 180px;
+	
+	font-weight: 900;
+	font-size:48px;
+	font-family: "Lato", sans-serif !important;
+	color: #061b36;
+}
+
+#meal-left-col h1 {
+	font-weight: 900;
+	font-size:48px;
+	font-family: "Lato", sans-serif !important;
+	color: #061b36;
+	line-height: 65px;
+}
+
+
+/*Hide default style*/
+#meal-left-col input[type=radio] {
+	opacity: 0;
+	position: fixed;
+	width: 0;
+}
+
+/* The container */
+#meal-left-col label {
+	background: #FCFEFF;
+	border: 1px solid #DEDEDE;
+	box-sizing: border-box;
+	box-shadow: 1px 0px 12px 9px #F1F4F9;
+	border-radius: 40px;
+	padding: 9px 24px 9px 24px;
+	font-family: "Nato", sans-serif !important;
+	font-weight: 300;
+	margin-right: 22px;
+	font-size:16px;
+	color: #000000;
+	cursor: pointer;
+}
+
+/* On mouse-over, add a grey background color */
+#meal-left-col input[type="radio"]:checked + label{
+	background: #AC77F0;
+	box-shadow: 0px 4px 12px rgba(162, 89, 255, 0.74);
+	border-radius: 40px;
+	border: none;
+	color: #F7F7F7;
+	cursor: pointer;
+
+}
+
+#meal-left-col input[type="submit"]{
+	color: #7519EB;
+	font-size: 36px;
+	width: 100%;
+
+	font-weight: 600; 
+	background-color: #FFFFFF !important;
+	padding-left: 0px;
+	text-align: left;
+	background: url("images/arrow-right.svg");
+	background-repeat: no-repeat;
+	background-position: 295px 13px;
+}
+
+
+#meal-left-col a:hover{
+	color: #000000 !important;
+	font-weight: 300 !important;
+}
+
+
+
 
 
 /*----- forms -----*/
