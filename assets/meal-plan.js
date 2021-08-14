@@ -17,6 +17,9 @@ function doCalculation() {
   //Calories each meal
   var calEachMeal = new Array(2);
 
+  //Calories each meal
+  var calCurrentMeal = new Array(2);
+
 
   //Storage of meal
   var mealStorage = [
@@ -27,6 +30,9 @@ function doCalculation() {
 
   //Storage of category selection
   var category;
+	
+  // Storage of budget of a dqay
+  let budget = 0;
 
   // validate calories input
   if (calories == "") {
@@ -113,6 +119,7 @@ function doCalculation() {
 
         if (mealRepeatCheckResult == 1) {
           CurrentCalories += mealStorageTemp[5];
+          budget +=  mealStorageTemp[6];
           mealStorage[mealAmount] = mealStorageTemp;
           mealStorage[mealAmount][9] = countMealTime;
           mealAmount++;
@@ -123,6 +130,8 @@ function doCalculation() {
         isContinue = 0;
       }
     } while (MaxCalories - CurrentCalories > 0 && isContinue == 1);
+    calCurrentMeal[countMealTime] = CurrentCalories;
+
   }
 
 
@@ -131,11 +140,136 @@ function doCalculation() {
     console.log(mealStorage[debugCount]);
   }
 
-  return true;
+  // ----------------  PRINTRESULT ----------------
+  // display reset button and hide submit button. Disable illustration
+  document.getElementById("submit_btn").style.display = "none";
+  document.getElementById("reset_btn").style.display = "inline";
+  document.getElementById("meal-right-col").style.display = "none";
+  document.getElementById("meal-right-result-col").style.display = "inline";
 
+  // disabled calories input
+  document.getElementById("cal").disabled = true;
+
+  // set a alert when clicking category button
+  document.getElementById("anything").addEventListener("click", alertReset);
+  document.getElementById("paleo").addEventListener("click", alertReset);
+  document.getElementById("vegetarian").addEventListener("click", alertReset);
+  document.getElementById("vegan").addEventListener("click", alertReset);
+  document.getElementById("keto").addEventListener("click", alertReset);
+  document.getElementById("medi").addEventListener("click", alertReset);
+
+
+  // write overview
+  var totalCalories = calCurrentMeal[0] + calCurrentMeal[1] + calCurrentMeal[2];	
+
+  document.getElementById("overview-cals").innerHTML = totalCalories.toFixed(2) + " Calories";
+  document.getElementById("overview-cals-remain").innerHTML = (calories - totalCalories).toFixed(2) + " calories remained";
+  document.getElementById("overview-pricing").innerHTML = "AUD $ " + budget.toFixed(2);
+
+
+
+
+  // write meal storage to front end
+  // three meal time
+  for (let countMealTime = 0; countMealTime < 3; countMealTime++) {
+    // go to each line in storage to see is this meal in the right meal time. If yes print it out.
+
+	let elementParentIDName = null;
+	switch(countMealTime){
+		case(0):
+		elementParentIDName = "breakfast";
+		break;
+		
+        case(1):
+		elementParentIDName = "lunch";
+		break;
+		
+        case(2):
+		elementParentIDName = "dinner";
+		break;
+			
+	}
+
+    // write title and calories information for breakfast, lunch and dinner
+    document.getElementById("result-col-"+ elementParentIDName +"-title").innerHTML = elementParentIDName.charAt(0).toUpperCase() + elementParentIDName.slice(1) + " (Total " + calCurrentMeal[countMealTime].toFixed(2) + " Cal/Limit " + calEachMeal[countMealTime].toFixed(2) + " Cal)";
+
+
+    for (let countWrittenMeal = 0; countWrittenMeal < mealStorage.length; countWrittenMeal++) {
+
+      if (mealStorage[countWrittenMeal][9] == countMealTime) {
+
+        // -------- create a container for meal -------- 
+        // create a new div and give it a class name
+        let elementDiv = document.createElement("div");
+        elementDiv.className = "result-col-item";
+
+        // set id 
+        let elementDivID = "result-col-item-" + countWrittenMeal;
+        elementDiv.setAttribute("id", elementDivID);
+
+        // get the parent want to insert
+        // remember to change to the right parent
+        let elementParent = document.getElementById("result-col-" + elementParentIDName);
+        elementParent.appendChild(elementDiv);
+
+        // -------- get container for this meal -------- 
+        let elementParentforMealContainer = document.getElementById(elementDivID);
+
+
+        // -------- images for meal -------- 
+        // create a new elemtns for images
+        let elementforImage = document.createElement("div");
+		elementforImage.className = "result-col-image";
+
+		
+        // remember to insert url here
+		let bg = "background-image: url(" + mealStorage[countWrittenMeal][7] +")"
+		// this method set image as background so there won't be wired size happen
+        elementforImage.setAttribute("style", bg);
+
+        // add to HTML in the meal container
+        elementParentforMealContainer.appendChild(elementforImage);
+
+
+        // -------- div for span -------- 
+        // create a new div for two span and set class name
+        let elementDivforSpan = document.createElement("div");
+        elementDivforSpan.className = "result-col-item-content";
+
+        // set id for unique identification
+        let elementDivforSpanID = "result-col-item-content-" + countWrittenMeal;
+        elementDivforSpan.setAttribute("id", elementDivforSpanID);
+        // add to HTML in the meal container
+        elementParentforMealContainer.appendChild(elementDivforSpan);
+
+        // -------- get container for this meal -------- 
+        let elementParentforSpanContainer = document.getElementById(elementDivforSpanID);
+
+
+        // -------- content in span -------- 
+        // create a new elements for two span and set class name
+        let elementSpan1 = document.createElement("span");
+        let elementSpan2 = document.createElement("span");
+        elementSpan1.className = "result-col-item-heading";
+        elementSpan2.className = "result-col-item-article";
+
+        // add to HTML in the meal container
+        elementParentforSpanContainer.appendChild(elementSpan1);
+        elementParentforSpanContainer.appendChild(elementSpan2);
+
+        // remember to insert meal info here.
+        elementSpan1.innerHTML = mealStorage[countWrittenMeal][0];
+        elementSpan2.innerHTML = "<br>" + mealStorage[countWrittenMeal][5] + " Calories<br>AUD " + mealStorage[countWrittenMeal][6];
+      }
+
+    }
+  }
+  return true;
 }
 
 
+
+//finding meal using pass in attribute
 function findMeal(cal, category, meal) {
   //min from 0
   var min = Math.ceil(0);
@@ -170,19 +304,22 @@ function findMeal(cal, category, meal) {
         }
       }
     }
-	
-	// if reach to this line second time, that means there are no meal sutiable, than return a "null"
+
+    // if reach to this line second time, that means there are no meal sutiable, than return a "null"
     if (doRepeat == 1) {
       return null;
     }
 
-	// if the system reach this line at the first time, that means there are no match meal in the half loop
-	// so reset the loop and poll from the first one.
+    // if the system reach this line at the first time, that means there are no match meal in the half loop
+    // so reset the loop and poll from the first one.
     value = 0;
     doRepeat = 1;
   } while (doRepeat == 1);
+}
 
 
+function alertReset() {
+  alert("Please click the reset button!");
 }
 
 
