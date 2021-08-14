@@ -88,9 +88,6 @@
   display: flex;
   flex-direction: column;
 }
-#meal-right-col {
-  margin-left: auto;
-}
 #meal-left-col input[type="number"] {
   border-top: 0px !important;
   border-buttom: 10px !important;
