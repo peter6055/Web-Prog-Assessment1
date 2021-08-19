@@ -26,7 +26,7 @@ function registerValidateForm(isSubmit) {
 
   if (isSubmit) {
     var emailRegex = new RegExp("^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+");
-    let phoneRegex = /^\+614\d{8}$/;
+    let phoneRegex = /^\+61 4\d{2} \d{3} \d{3}$/;
 
     if (firstname == "") {
       alert("First Name must be filled out");
@@ -67,7 +67,7 @@ function registerValidateForm(isSubmit) {
 
     //----- Tel Format Validation -----
     if (phoneRegex.test(phone) == false) {
-      alert("Please check your mobile number. Phone number format incorrect.");
+      alert("Please check your mobile number. Phone number format incorrect.);
       return false;
     }
 
