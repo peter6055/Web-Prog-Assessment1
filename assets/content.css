@@ -1,6 +1,6 @@
 /* CSS Document */
 /*container of main content area*/
-.content-container {
+.content-container, .home-content-container {
   width: 70%;
   min-width: 1024px;
   display: flex;
@@ -451,7 +451,7 @@ div#meal-right-col {
 
 /*----- service page post -----*/
 /*post back to previous page btn*/
-.article-content-container .inpara-back-btn{
+.inpara-back-btn{
 	cursor: pointer;
 	background: url("images/arrow1.png") no-repeat;
 	background-size: 40px auto;
@@ -459,7 +459,7 @@ div#meal-right-col {
 }
 
 /*post heading 1 style*/
-.article-content-container .inpara-head1 {
+.inpara-head1 {
     font-family: 'Lato';
     font-weight: 600;
     font-size: 60px;
@@ -468,7 +468,7 @@ div#meal-right-col {
 }
 
 /*post heading 2 style*/
-.article-content-container .inpara-head2 {
+.inpara-head2 {
     font-family: 'Lato';
     font-weight: 600;
     font-size: 30px;
@@ -477,7 +477,7 @@ div#meal-right-col {
 }
 
 /*post article style*/
-.article-content-container .inpara-article {
+.inpara-article {
     letter-spacing: -0.003em;
     line-height: 32px;
     font-size: 19px;
@@ -485,7 +485,7 @@ div#meal-right-col {
 }
 
 /*img container*/
-.article-content-container .inpara-img {
+.inpara-img {
 	height: 400px;
 	box-shadow: 0px 4px 14px 8px #d8d8d86e;
 	margin-top: 20px;
@@ -495,7 +495,7 @@ div#meal-right-col {
 }
 
 /*blue warning container*/
-.article-content-container .blue-container{
+.blue-container{
 	background: rgb(137, 208, 205);
 	border-radius: 6px;
 	padding: 30px;
@@ -503,33 +503,49 @@ div#meal-right-col {
 }
 
 /*yellow warning container*/
-.article-content-container .yellow-container{
+.yellow-container{
 	background: #ffd187;
 	border-radius: 6px;
 	padding: 30px;
 	margin-top: 30px;
 }
 
+
+/*yellow warning container*/
+.purple-container{
+	background: #b7a9d6;
+	border-radius: 6px;
+	padding: 30px;
+	margin-top: 30px;
+}
+
+
 /*warning container heading*/
-.article-content-container .inpara-container-head{
+.inpara-container-head{
 	margin-top: 0px;
     margin-bottom: 20px;
 }
 
 /*warning container blue icon*/
-.article-content-container .inpara-container-blue-icon{
+.inpara-container-blue-icon{
 	background: url("images/icons8-info.svg") no-repeat;
 	background-size: 38px auto;
 }
 
 /*warning container yellow icon*/
-.article-content-container .inpara-container-yellow-icon{
+.inpara-container-yellow-icon{
 	background: url("images/icons8-for-you.svg") no-repeat;
 	background-size: 40px auto;
 }
 
+/*warning container yellow icon*/
+.inpara-container-purple-icon{
+	background: url("images/icons8-sun.svg") no-repeat;
+	background-size: 40px auto;
+}
+
 /*warning container yellow button*/
-.article-content-container .inpara-container-btn{
+.inpara-container-btn{
 	background-color: #423863;
     color: white;
     padding: 15px 10px;

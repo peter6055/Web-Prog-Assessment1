@@ -11,6 +11,11 @@
 	margin-top: 9px;
 }
 
+/*logo img size*/
+.logo img{
+	height:50px;
+}
+
 /*Nav bar menu style*/
 .menu{
     margin-left:auto;

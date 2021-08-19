@@ -26,6 +26,12 @@
   	padding: 20px 30px 20px 20px;
 }
 
+/*footer img*/
+.footer-container #left img{
+	height:50px; 
+	width:150px;
+}
+
 .footer-container .link a{
 	padding-right: 10px;
 }
@@ -56,4 +62,10 @@
 	color: #FFFFFF !important;
 	text-decoration-line:underline !important;
 	font-weight: 400 !important;
+}
+
+
+/*footer heading*/
+.footer .footer-head1{
+	font-weight: 700;
 }

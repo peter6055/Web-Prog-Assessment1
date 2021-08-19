@@ -67,7 +67,7 @@ function registerValidateForm(isSubmit) {
 
     //----- Tel Format Validation -----
     if (phoneRegex.test(phone) == false) {
-      alert("Please check your mobile number. Phone number format incorrect.);
+      alert("Please check your mobile number. Phone number format incorrect.");
       return false;
     }
 
