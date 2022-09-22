@@ -1,7 +1,8 @@
 function doCalculation() {
   let calories = document.forms["meal-form"]["cal"].value;
+  let meals_amount = document.forms["meal-form"]["meals-amount"].value;
 
-  //Categories
+  // Categories
   let cate_anything = document.forms["meal-form"]["anything"].checked;
   let cate_paleo = document.forms["meal-form"]["paleo"].checked;
   let cate_vegetarian = document.forms["meal-form"]["vegetarian"].checked;
@@ -9,136 +10,199 @@ function doCalculation() {
   let cate_keto = document.forms["meal-form"]["keto"].checked;
   let cate_medi = document.forms["meal-form"]["medi"].checked;
 
-  //Calories Setting
-  let breakfast_cal_percentage = 0.2;
-  let lunch_cal_percentage = 0.5;
-  let dinner_cal_percentage = 0.3;
+  // Calories Setting
+  var breakfast_cal_percentage = 0;
+  var lunch_cal_percentage = 0;
+  var dinner_cal_percentage = 0;
+  var snack_cal_percentage = 0;
 
-  //Calories each meal
-  var calEachMeal = new Array(2);
+  if(meals_amount == 2){
+    breakfast_cal_percentage = 0.3;
+    lunch_cal_percentage = 0.7;
+    dinner_cal_percentage = 0.0;
+    snack_cal_percentage = 0.0;
 
-  //Calories each meal
-  var calCurrentMeal = new Array(2);
+  } else if(meals_amount == 3){
+    breakfast_cal_percentage = 0.2;
+    lunch_cal_percentage = 0.5;
+    dinner_cal_percentage = 0.3;
+    snack_cal_percentage = 0.0;
+
+  } else if(meals_amount == 4){
+    breakfast_cal_percentage = 0.1;
+    lunch_cal_percentage = 0.5;
+    dinner_cal_percentage = 0.3;
+    snack_cal_percentage = 0.1;
+
+  }
 
 
-  //Storage of meal
+  // Calories each meal
+  var calEachMeal = new Array(4);
+
+  // Calories each meal
+  var calCurrentMeal = new Array(4);
+
+  // Storage of meal
   var mealStorage = [
     [],
     []
   ];
 
 
-  //Storage of category selection
+  // Storage of category selection
   var category;
-	
-  // Storage of budget of a dqay
+  var categoryId;
+  // Storage of budget of a day
   let budget = 0;
 
-  // validate calories input
-  if (calories == "") {
-    alert("Don't starve! Please fill out calories felid.");
-    return false;
-
-  } else if (calories <= 1200) {
-    alert("You need to serve more than 1200 calories for 3 meals a day!");
-    return false;
-  } else if (calories >= 2700) {
-    alert("A recommanded daily calorie intake is 2000 cal for women and 2500 for men");
-    return false;
-  }
-
-  // validate category selection and get the selected category
-  if (cate_anything == true) {
-    category = "any";
-
-  } else if (cate_paleo == true) {
-    category = "Paleo";
-
-  } else if (cate_vegetarian == true) {
-    category = "Vegetarian";
-
-  } else if (cate_vegan == true) {
-    category = "Vegan";
-
-  } else if (cate_keto == true) {
-    category = "Ketogenic";
-
-  } else if (cate_medi == true) {
-    category = "Mediterranean";
-
-  } else {
-    alert("Please select a category");
-    return false;
-  }
+  // Record the uncertainty attempts
+  var countCalculationAttempts = 0
 
 
-  // calculate serve for each meal
-  calEachMeal[0] = calories * breakfast_cal_percentage;
-  calEachMeal[1] = calories * lunch_cal_percentage;
-  calEachMeal[2] = calories * dinner_cal_percentage;
+  // only accept 10% except and actual uncertainty
+  // if we are no able to get result in 10 attempts, ignore the uncertainty constraints
+  do{
+    countCalculationAttempts++;
+
+    // reset data
+    mealStorage = [
+      [],
+      []
+    ];
+    category = "";
+    budget = 0
+
+    // validate calories input
+    if (calories == "") {
+      alert("Don't starve! Please fill out calories field.");
+      return false;
+
+    } else if (calories <= 1200) {
+      alert("You need to serve more than 1200 calories for a day!");
+      return false;
+    } else if (calories >= 2700) {
+      alert("A recommended daily calorie intake is 2000 cal for women and 2500 for men");
+      return false;
+    }
+
+    // validate category selection and get the selected category
+    if (cate_anything == true) {
+      category = "any";
+      categoryId = "anything";
+
+    } else if (cate_paleo == true) {
+      category = "Paleo";
+      categoryId = "paleo";
 
 
-  // value to calculate how many meal in a day
-  let mealAmount = 0;
+    } else if (cate_vegetarian == true) {
+      category = "Vegetarian";
+      categoryId = "vegetarian";
 
-  // three meal time: breakfast, lunch, dinner
-  for (let countMealTime = 0; countMealTime < 3; countMealTime++) {
 
-    // get max calories of this meal
-    let MaxCalories = calEachMeal[countMealTime];
+    } else if (cate_vegan == true) {
+      category = "Vegan";
+      categoryId = "vegan";
 
-    // set calories for sum up all calories from this meal
-    let CurrentCalories = 0;
 
-    // set detection for end the loop as there are no enough data set
-    let isContinue = 1;
+    } else if (cate_keto == true) {
+      category = "Ketogenic";
+      categoryId = "keto";
 
-    // start to send query to data API exit loop until exceeds cal limit
-    do {
-      var mealStorageTemp = findMeal(MaxCalories - CurrentCalories, category, countMealTime);
 
-      // if the data API return a valid data catch it and start to check repeatation.
-      if (mealStorageTemp != null) {
-        var mealRepeatCheckResult = 1;
+    } else if (cate_medi == true) {
+      category = "Mediterranean";
+      categoryId = "medi";
 
-        // check repeatation when there are data existing in storage otherwise add to database directly
-        if (!(mealStorage.length == 0)) {
 
-          // check the data from storage one by one 
-          for (let countMealRepeatCheck = 0; countMealRepeatCheck < mealStorage.length; countMealRepeatCheck++) {
-            if (mealStorageTemp[0] == mealStorage[countMealRepeatCheck][0]) {
+    } else {
+      alert("Please select a category");
+      return false;
+    }
 
-              // if there are something same, to exit the for loop maxiumlize the countMealRepeatCheck
-              // moreoverm 
-              countMealRepeatCheck = 9999999999999999999999;
-              mealRepeatCheckResult = 0;
+    document.getElementById("selectedPreference").value = categoryId;
+
+
+    // calculate serve for each meal
+    calEachMeal[0] = calories * breakfast_cal_percentage;
+    calEachMeal[1] = calories * lunch_cal_percentage;
+    calEachMeal[2] = calories * dinner_cal_percentage;
+    calEachMeal[3] = calories * snack_cal_percentage;
+
+
+    // value to calculate how many meal in a day
+    let mealAmount = 0;
+
+    // three meal time: breakfast, lunch, dinner
+    for (let countMealTime = 0; countMealTime < meals_amount; countMealTime++) {
+
+
+      // get max calories of this meal
+      let MaxCalories = calEachMeal[countMealTime];
+
+      // set calories for sum up all calories from this meal
+      let CurrentCalories = 0;
+
+      // set detection for end the loop as there are no enough data set
+      let countFindMealRequest = 0;
+
+      // start to send query to data API exit loop until exceeds cal limit
+      do {
+        var mealStorageTemp = findMeal(MaxCalories - CurrentCalories, category, countMealTime, mealStorage);
+
+        // if the data API return a valid data catch it and start to check repetition.
+        if (mealStorageTemp != null) {
+          var mealRepeatCheckResult = 1;
+
+          // check repetition when there are data existing in storage otherwise add to database directly
+          if (!(mealStorage.length == 0)) {
+
+
+            // check the data from storage one by one
+            for (let countMealRepeatCheck = 0; countMealRepeatCheck < mealStorage.length; countMealRepeatCheck++) {
+              if (mealStorageTemp[0] == mealStorage[countMealRepeatCheck][0]) {
+
+                // if there are the same, to exit the for loop maximize the countMealRepeatCheck
+                countMealRepeatCheck = 9999999999999999999999;
+                mealRepeatCheckResult = 0;
+              }
             }
           }
+
+
+          if (mealRepeatCheckResult == 1) {
+            CurrentCalories += mealStorageTemp[5];
+            budget +=  mealStorageTemp[6];
+            mealStorage[mealAmount] = mealStorageTemp;
+            mealStorage[mealAmount][9] = countMealTime;
+            mealAmount++;
+          }
+
+        } else {
+          // if the data API return null means there are no meal matched, so exit this meal time
+          countFindMealRequest++;
         }
 
+      } while (MaxCalories - CurrentCalories > 0 && countFindMealRequest < 100);
+      calCurrentMeal[countMealTime] = CurrentCalories;
 
-        if (mealRepeatCheckResult == 1) {
-          CurrentCalories += mealStorageTemp[5];
-          budget +=  mealStorageTemp[6];
-          mealStorage[mealAmount] = mealStorageTemp;
-          mealStorage[mealAmount][9] = countMealTime;
-          mealAmount++;
-        }
+    }
 
-      } else {
-        // if the data API return null means there are no meal match, so exit this meal time 
-        isContinue = 0;
+    // if there are any meals without cals, means user didn't defined it, replace it with zero
+    for(let countMeals = 0 ; countMeals < calCurrentMeal.length ; countMeals++){
+      if(calCurrentMeal[countMeals] == null) {
+        calCurrentMeal[countMeals] = 0
       }
-    } while (MaxCalories - CurrentCalories > 0 && isContinue == 1);
-    calCurrentMeal[countMealTime] = CurrentCalories;
+    }
 
-  }
+    // write overview
+    var totalCalories = calCurrentMeal[0] + calCurrentMeal[1] + calCurrentMeal[2] + calCurrentMeal[3];
 
 
-  // ---------------- DEBUG ----------------
-  for (let debugCount = 0; debugCount < mealStorage.length; debugCount++) {
-    console.log(mealStorage[debugCount]);
-  }
+  } while (calories-totalCalories > calories*0.1 && countCalculationAttempts < 11);
+
+
 
   // ----------------  PRINTRESULT ----------------
   // display reset button and hide submit button. Disable illustration
@@ -149,6 +213,10 @@ function doCalculation() {
 
   // disabled calories input
   document.getElementById("cal").disabled = true;
+  document.getElementById("cal").style.cursor = "not-allowed";
+
+  document.getElementById("meals-amount").disabled = true;
+  document.getElementById("meals-amount").style.cursor = "not-allowed";
 
   // set a alert when clicking category button
   document.getElementById("anything").addEventListener("click", alertReset);
@@ -159,19 +227,17 @@ function doCalculation() {
   document.getElementById("medi").addEventListener("click", alertReset);
 
 
-  // write overview
-  var totalCalories = calCurrentMeal[0] + calCurrentMeal[1] + calCurrentMeal[2];	
-
   document.getElementById("overview-cals").innerHTML = totalCalories.toFixed(2) + " Calories";
   document.getElementById("overview-cals-remain").innerHTML = (calories - totalCalories).toFixed(2) + " calories remained";
-  document.getElementById("overview-pricing").innerHTML = "AUD $ " + budget.toFixed(2);
+  document.getElementById("overview-pricing").innerHTML = "AUD " + budget.toFixed(2);
 
 
 
 
   // write meal storage to front end
   // three meal time
-  for (let countMealTime = 0; countMealTime < 3; countMealTime++) {
+  for (let countMealTime = 0; countMealTime < meals_amount; countMealTime++) {
+
     // go to each line in storage to see is this meal in the right meal time. If yes print it out.
 
 	let elementParentIDName = null;
@@ -187,11 +253,26 @@ function doCalculation() {
         case(2):
 		elementParentIDName = "dinner";
 		break;
+
+        case(3):
+        elementParentIDName = "snack";
+        break;
 			
 	}
 
+    var accuracyRate = toPercentage(calCurrentMeal[countMealTime].toFixed(2)/calEachMeal[countMealTime].toFixed(2)).toFixed(1);
+    var accuracyRateTest;
+
+    if(accuracyRate >= 90){
+      accuracyRateTest = "result-col-accuracy-pass";
+
+    } else if(accuracyRate < 90) {
+      accuracyRateTest = "result-col-accuracy-fail";
+
+    }
+
     // write title and calories information for breakfast, lunch and dinner
-    document.getElementById("result-col-"+ elementParentIDName +"-title").innerHTML = elementParentIDName.charAt(0).toUpperCase() + elementParentIDName.slice(1) + " (Total " + calCurrentMeal[countMealTime].toFixed(2) + " Cal/Limit " + calEachMeal[countMealTime].toFixed(2) + " Cal)";
+    document.getElementById("result-col-"+ elementParentIDName +"-title").innerHTML = "<span>" + elementParentIDName.charAt(0).toUpperCase() + elementParentIDName.slice(1) + " (Total " + calCurrentMeal[countMealTime].toFixed(2) + " Cal/Limit " + calEachMeal[countMealTime].toFixed(2) + " Cal) </span><br><span class='result-col-accuracy " + accuracyRateTest + "'>&nbsp&nbspAccuracy Rates: " +  accuracyRate + "%&nbsp&nbsp</span>";
 
 
     for (let countWrittenMeal = 0; countWrittenMeal < mealStorage.length; countWrittenMeal++) {
@@ -217,7 +298,7 @@ function doCalculation() {
 
 
         // -------- images for meal -------- 
-        // create a new elemtns for images
+        // create a new element for images
         let elementforImage = document.createElement("div");
 		elementforImage.className = "result-col-image";
 
@@ -259,7 +340,7 @@ function doCalculation() {
 
         // remember to insert meal info here.
         elementSpan1.innerHTML = mealStorage[countWrittenMeal][0];
-        elementSpan2.innerHTML = "<br>" + mealStorage[countWrittenMeal][5] + " Calories<br>AUD " + mealStorage[countWrittenMeal][6];
+        elementSpan2.innerHTML = "<br>" + mealStorage[countWrittenMeal][5] + " Calories<br>AUD " + mealStorage[countWrittenMeal][6].toFixed(2);
       }
 
     }
@@ -269,57 +350,96 @@ function doCalculation() {
 
 
 
-//finding meal using pass in attribute
-function findMeal(cal, category, meal) {
-  //min from 0
-  var min = Math.ceil(0);
-
-  //max from data array length
-  var max = Math.floor(data(1, 0));
-
-  //generate random number from min - max
-  var value = Math.floor(Math.random() * (max - min + 1)) + min;
-
-  // to make meal match the array isbreakfast, isLunch or isDinner check
-  meal += 2;
-
+// finding meal using pass in attribute
+function findMeal(cal, category, meal, mealStorage) {
   // detect do we need to repeat
   // 1: yes
   // 0: no
   var doRepeat = 0;
+  var value = 0;
+
+
 
   do {
+    //min from 0
+    var min = Math.ceil(0);
+
+    //max from data array length
+    var max = Math.floor(data(1, 0));
+
+
+
+    if(doRepeat !== 1){
+      //generate random number from min - max
+      value = Math.floor(Math.random() * (max - min + 1)) + min;
+    } else {
+      value = 0;
+    }
+
+
+    // to make meal match the array isBreakfast, isLunch or isDinner check
+    if(meal === 3){
+      meal = 2;
+
+    } else {
+      meal += 2;
+    }
+
     //start from the random row and end in the max row
     for (var countData = value; countData < data(1, 0); countData++) {
-
       // call data API and ask for data
       var selectedData = data(2, countData);
 
-      // if the meal is sutiable (match meal time, category and calories)
+      // if the meal is suitable (match meal time, category and calories)
       if (selectedData[1] == category || category == "any") {
         if (selectedData[meal] == true) {
           if (selectedData[5] <= cal) {
-            return selectedData;
+            if(didMealRepeat(mealStorage, selectedData) === false){
+              return selectedData;
+            }
           }
         }
       }
     }
 
-    // if reach to this line second time, that means there are no meal sutiable, than return a "null"
-    if (doRepeat == 1) {
+    if(doRepeat === 1){
       return null;
+
     }
 
     // if the system reach this line at the first time, that means there are no match meal in the half loop
     // so reset the loop and poll from the first one.
     value = 0;
     doRepeat = 1;
-  } while (doRepeat == 1);
+  } while (doRepeat === 1);
+
+}
+
+function didMealRepeat(mealStorage, selectedData){
+   for (var countStoreMeal = 0; countStoreMeal < mealStorage.length ; countStoreMeal++){
+
+     // find match name, did the meal repeat
+     if(mealStorage[countStoreMeal][0] === selectedData[0]){
+       return true;
+
+     } else {
+       return false;
+
+     }
+   }
 }
 
 
 function alertReset() {
+  var selectedBeforeThis = document.getElementById("selectedPreference").value;
+  document.getElementById(selectedBeforeThis).checked = true;
+
   alert("Please click the reset button!");
+}
+
+
+function toPercentage(num) {
+  return (num/100)*10000;
 }
 
 
@@ -426,7 +546,7 @@ function data(functionID, parseID) {
       "Roasted olives", "Mediterranean", true, true, true, 470.79, 6.85, "https://img.taste.com.au/S9JjjAsA/w720-h480-cfill-q80/taste/2016/11/roasted-olives-109865-1.jpeg", "https://www.taste.com.au/recipes/roasted-olives/420e0f43-64c7-4904-8fcf-c226ad3e6020?r=healthy/OOk6eUcx"
     ],
     [
-      "Mediterranean lamb shoulder roast with lemon, olives and white wine", "Mediterranean", false, false, true, 148.40, 32.26, "https://www.taste.com.au/recipes/mediterranean-lamb-shoulder-roast-lemon-olives-white-wine/4a69a1c0-5d53-48fb-af62-36eb9b5867d5", "https://www.taste.com.au/recipes/mediterranean-lamb-shoulder-roast-lemon-olives-white-wine/4a69a1c0-5d53-48fb-af62-36eb9b5867d5?r=healthy/OOk6eUcx"
+      "Mediterranean lamb shoulder roast with lemon, olives and white wine", "Mediterranean", false, false, true, 148.40, 32.26, "https://img.taste.com.au/C87r8_q_/w720-h480-cfill-q80/taste/2016/11/mediterranean-lamb-shoulder-roast-with-lemon-olives-and-white-wine-103512-1.jpeg", "https://www.taste.com.au/recipes/mediterranean-lamb-shoulder-roast-lemon-olives-white-wine/4a69a1c0-5d53-48fb-af62-36eb9b5867d5?r=healthy/OOk6eUcx"
     ],
     [
       "Mediterranean roasted mushrooms", "Mediterranean", true, false, true, 245.46, 39.38, "https://img.taste.com.au/4ZNRotJJ/w720-h480-cfill-q80/taste/2016/11/mediterranean-roasted-mushrooms-95028-1.jpeg", "https://www.taste.com.au/recipes/mediterranean-roasted-mushrooms/5e5e0280-81d1-4a6e-a603-1fef9c753a7a?r=healthy/OOk6eUcx"
@@ -522,9 +642,6 @@ function data(functionID, parseID) {
       "Miso and tahini dressing", "Paleo", false, true, true, 693.12, 35.86, "https://img.taste.com.au/luXm33-V/w720-h480-cfill-q80/taste/2016/11/miso-and-tahini-dressing-103405-1.jpeg", "https://www.taste.com.au/recipes/miso-tahini-dressing/1fb2abe2-a9fb-46e4-ba3f-98384560dcd3?r=recipes/paleorecipes&c=b01d3705-a10c-4d3d-b2dd-0f5a8237544d/Paleo%20recipes"
     ],
     [
-      "Paleo almond, pecan and coconut crumbed chicken", "Paleo", true, true, false, 105.39, 32.81, "https://img.taste.com.au/kTLR_tRX/w720-h480-cfill-q80/taste/2016/11/pecan-nuts-y-seeds-and-nuts-103289-2.jpeg", "https://www.taste.com.au/recipes/paleo-almond-pecan-coconut-crumbed-chicken/2937a0fa-92f0-4a30-9d20-cd79a07cf869?r=recipes/paleorecipes&c=b01d3705-a10c-4d3d-b2dd-0f5a8237544d/Paleo%20recipes"
-    ],
-    [
       "Broccolini with anchovy almonds", "Paleo", false, false, false, 138.69, 7.37, "https://img.taste.com.au/CwIACKMh/w720-h480-cfill-q80/taste/2016/11/broccolini-with-anchovy-almonds-102705-1.jpeg", "https://www.taste.com.au/recipes/broccolini-anchovy-almonds/a2721377-179e-412e-be62-bc8eabbe5f34?r=recipes/paleorecipes&c=b01d3705-a10c-4d3d-b2dd-0f5a8237544d/Paleo%20recipes"
     ],
     [
@@ -604,4 +721,14 @@ function data(functionID, parseID) {
     return meal[parseID];
   }
 
+}
+
+
+
+function overlayOn() {
+  document.getElementById("help-overlay").style.display = "block";
+}
+
+function overlayOff() {
+  document.getElementById("help-overlay").style.display = "none";
 }
